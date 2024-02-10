@@ -66,10 +66,7 @@ async function validateRental(rental) {
         console.log('validation passed');
         return{};
     }catch(err){
-        // console.log("AYO");
-        // console.log(err);
         return {error: err.message};
-        // return 1;
     }
 }
 

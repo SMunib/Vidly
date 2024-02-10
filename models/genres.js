@@ -13,13 +13,12 @@ const Genre =  mongoose.model('Genre',genreSchema);
 
 async function validateGenre(genre) {
     const schema = Joi.object({
-        name: Joi.string().min(5).required()
+        name: Joi.string().min(5).max(50).required()
     });
     try{
         await schema.validateAsync(genre);
-        // console.log("Validation Passed(Joi)");
     }catch(error){
-        console.log(error);
+        return {error: error.message};
     }   
 }
 

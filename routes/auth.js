@@ -3,8 +3,6 @@ const router = express.Router();
 const {User} = require('../models/users');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 
 router
     .route('/')
@@ -21,6 +19,8 @@ router
         const token = user.generateAuthToken();
         res.send(token);
     });
+
+    //logging out user not shown by mosh
 
     async function validate(user) {
         const schema = Joi.object({

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Customer,validate} = require('../models/customer');
+const auth = require('../middleware/auth');
 
 router
     .route('/')
@@ -8,7 +9,7 @@ router
         const customer = await Customer.find().sort('name');
         res.send(customer);
     })
-    .post(async(req,res) => {
+    .post(auth,async(req,res) => {
         const {error} = validate(req.body);
         if(error) return res.status(400).send(error.details[0].message);
 
@@ -23,7 +24,7 @@ router
 
 router
     .route('/:id')
-    .patch(async(req,res) => {
+    .patch(auth,async(req,res) => {
         const error = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
@@ -38,7 +39,7 @@ router
 
         res.send(customer);
     })
-    .delete(async(req,res) => {
+    .delete(auth,async(req,res) => {
         const error = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 

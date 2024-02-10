@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const {Movie,validate} = require('../models/movies');
 const { Genre } = require('../models/genres');
+const auth = require('../middleware/auth');
 
 router
     .route('/')
@@ -10,7 +11,7 @@ router
         const movies = await Movie.find().sort('title');
         res.send(movies);
     })
-    .post(async(req,res) => {
+    .post(auth,async(req,res) => {
         const {error} = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
@@ -34,7 +35,7 @@ router
         if(!movie) return res.status(404).send('Movie not found....');
         res.send(movie);
     })
-    .patch(async(req,res) => {
+    .patch(auth,async(req,res) => {
         const {error} = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
         const movie = await Movie.findByIdAndUpdate(req.params.id,{
@@ -45,7 +46,7 @@ router
         if(!movie) return res.status(404).send('Movie not found....');
         res.send(movie);
     })
-    .delete(async(req,res) => {
+    .delete(auth,async(req,res) => {
         const movie = await Movie.findByIdAndDelete(req.params.id);
         if(!movie) return res.status(404).send('Movie not found....');
         res.send(movie);
